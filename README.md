@@ -1,2 +1,2 @@
 # timeith
-TIMEith News Engine
+TIMEith, News Engine

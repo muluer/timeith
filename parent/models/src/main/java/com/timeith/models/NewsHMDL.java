@@ -1,0 +1,66 @@
+package com.timeith.models;
+
+import java.time.ZonedDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="news")
+public class NewsHMDL {
+	@Id
+	@GeneratedValue
+	@Column(name = "newsId")
+	private long newsId;
+	@Column(name="title")
+	private String title;
+	@Column(name="description")
+	private String description;
+	@Column(name="publishDate")
+	private ZonedDateTime publishDate;
+
+	public NewsHMDL() {
+	}
+
+	public NewsHMDL(String title, String description, ZonedDateTime publishDate) {
+		this.title = title;
+		this.description = description;
+		this.publishDate = publishDate;
+	}
+
+	public long getNewsId() {
+		return newsId;
+	}
+
+	public void setNewsId(long newsId) {
+		this.newsId = newsId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public ZonedDateTime getPublishDate() {
+		return publishDate;
+	}
+
+	public void setPublishDate(ZonedDateTime publishDate) {
+		this.publishDate = publishDate;
+	}
+
+}

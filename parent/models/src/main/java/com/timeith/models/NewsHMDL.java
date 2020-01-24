@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Table(name="news")
 public class NewsHMDL {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "newsId")
 	private long newsId;
 	@Column(name="title")
@@ -63,4 +64,10 @@ public class NewsHMDL {
 		this.publishDate = publishDate;
 	}
 
+	@Override
+	public String toString() {
+		return "NewsHMDL [newsId=" + newsId + ", title=" + title + ", description=" + description + ", publishDate="
+				+ publishDate + "]";
+	}
+	
 }

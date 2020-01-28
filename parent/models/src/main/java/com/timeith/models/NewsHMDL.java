@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name="news")
+@XmlRootElement
 public class NewsHMDL {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,7 +28,8 @@ public class NewsHMDL {
 	public NewsHMDL() {
 	}
 
-	public NewsHMDL(String title, String description, ZonedDateTime publishDate) {
+	public NewsHMDL(long newsId, String title, String description, ZonedDateTime publishDate) {
+		this.newsId = newsId;
 		this.title = title;
 		this.description = description;
 		this.publishDate = publishDate;

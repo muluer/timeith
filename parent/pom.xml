@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
@@ -9,6 +7,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<jersey.version>2.29.1</jersey.version>
+		<jetty.version>9.4.25.v20191220</jetty.version>
+		<hibernate.version>5.4.10.Final</hibernate.version>
 	</properties>
 
 	<groupId>com.timeith</groupId>
@@ -27,39 +28,45 @@
 		<module>twitter</module>
 		<module>db</module>
 		<module>models</module>
-	</modules>
+    <module>exception</module>
+  </modules>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-server</artifactId>
-				<version>9.4.25.v20191220</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-servlet</artifactId>
-				<version>9.4.25.v20191220</version>
+				<version>${jetty.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.core</groupId>
 				<artifactId>jersey-server</artifactId>
-				<version>2.29.1</version>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.containers</groupId>
 				<artifactId>jersey-container-servlet-core</artifactId>
-				<version>2.29.1</version>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.containers</groupId>
 				<artifactId>jersey-container-jetty-http</artifactId>
-				<version>2.29.1</version>
+				<version>${jersey.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.inject</groupId>
+				<artifactId>jersey-hk2</artifactId>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey.media</groupId>
-				<artifactId>jersey-media-moxy</artifactId>
-				<version>2.29.1</version>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -74,12 +81,12 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>5.4.10.Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-c3p0</artifactId>
-				<version>5.4.10.Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>

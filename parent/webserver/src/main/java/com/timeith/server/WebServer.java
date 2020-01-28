@@ -20,7 +20,7 @@ public class WebServer {
 		jettyServer.addConnector(jettyServerConnector);
 		
 		
-		 jerseyResourceConfig = new ResourceConfig();
+		ResourceConfig jerseyResourceConfig = new ResourceConfig();
 		jerseyResourceConfig.packages("com.timeith.webapi.services");
 		ServletContainer jerseyServletContainer = new ServletContainer(jerseyResourceConfig);
 		ServletHolder webapiServletHolder = new ServletHolder(jerseyServletContainer);

@@ -1,4 +1,4 @@
-package com.timeith.webapi.services;
+package com.timeith.webapi.resources;
 
 import java.util.List;
 

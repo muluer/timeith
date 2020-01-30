@@ -9,16 +9,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.hibernate.Session;
-
 import com.timeith.db.conn.CRUDNews;
-import com.timeith.db.conn.HibernateUtils;
 import com.timeith.models.NewsHMDL;
 
 @Path("/news")
 public class NewsRSC {
 
-	private Session session = null;
 	private NewsHMDL newsItem = null;
 
 	@Path("/create")
@@ -27,9 +23,9 @@ public class NewsRSC {
 	public Response create(@QueryParam("count") int count) {
 		try {
 			newsItem = CRUDNews.create(count);
-			return Response.status(Response.Status.CREATED).entity(newsItem).build();
+			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
 		}
 	}
 
@@ -37,15 +33,12 @@ public class NewsRSC {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAll() {
-		session = HibernateUtils.getSession();
 		List<NewsHMDL> newsList = null;
 		try {
-			newsList = CRUDNews.readAll(session);
-			HibernateUtils.closeSession();
+			newsList = CRUDNews.readAll();
 			return Response.status(Response.Status.OK).entity(newsList).build();
 		} catch (Exception e) {
-			HibernateUtils.closeSession();
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
 		}
 	}
 
@@ -53,14 +46,11 @@ public class NewsRSC {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(@QueryParam("newsid") long newsId) {
-		session = HibernateUtils.getSession();
 		try {
-			newsItem = CRUDNews.update(session, newsId);
-			HibernateUtils.closeSession();
+			newsItem = CRUDNews.update(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			HibernateUtils.closeSession();
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
 		}
 	}
 
@@ -68,15 +58,12 @@ public class NewsRSC {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readSingle(@QueryParam("newsid") long newsId) {
-		session = HibernateUtils.getSession();
 		System.out.println("Test read single news item..");
 		try {
-			newsItem = CRUDNews.readSingle(session, newsId);
-			HibernateUtils.closeSession();
+			newsItem = CRUDNews.readSingle(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			HibernateUtils.closeSession();
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
 		}
 	}
 
@@ -84,16 +71,26 @@ public class NewsRSC {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response delete(@QueryParam("newsid") long newsId) {
-		session = HibernateUtils.getSession();
 		System.out.println("Test delete news item..");
 		Boolean isDeleted = false;
 		try {
-			isDeleted = CRUDNews.delete(session, newsId);
-			HibernateUtils.closeSession();
+			isDeleted = CRUDNews.delete(newsId);
 			return Response.status(Response.Status.OK).entity(isDeleted).build();
 		} catch (Exception e) {
-			HibernateUtils.closeSession();
-			return Response.status(Response.Status.NOT_FOUND).build();
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+		}
+	}
+
+	@Path("/deleteall")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delete() {
+		System.out.println("Test delete all news item..");
+		try {
+			int itemCount = CRUDNews.deleteAll();
+			return Response.status(Response.Status.OK).entity(itemCount).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
 		}
 	}
 

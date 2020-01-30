@@ -11,18 +11,18 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name="news")
+@Table(name = "news")
 @XmlRootElement
 public class NewsHMDL {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "newsId")
 	private long newsId;
-	@Column(name="title")
+	@Column(name = "title")
 	private String title;
-	@Column(name="description")
+	@Column(name = "description")
 	private String description;
-	@Column(name="publishDate")
+	@Column(name = "publishDate")
 	private ZonedDateTime publishDate;
 
 	public NewsHMDL() {
@@ -72,5 +72,5 @@ public class NewsHMDL {
 		return "NewsHMDL [newsId=" + newsId + ", title=" + title + ", description=" + description + ", publishDate="
 				+ publishDate + "]";
 	}
-	
+
 }

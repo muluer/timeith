@@ -21,7 +21,7 @@ public class WebServer {
 		
 		
 		ResourceConfig jerseyResourceConfig = new ResourceConfig();
-		jerseyResourceConfig.packages("com.timeith.webapi.services");
+		jerseyResourceConfig.packages("com.timeith.webapi.resources");
 		ServletContainer jerseyServletContainer = new ServletContainer(jerseyResourceConfig);
 		ServletHolder webapiServletHolder = new ServletHolder(jerseyServletContainer);
 		
@@ -39,7 +39,7 @@ public class WebServer {
 		Server server = createServer(port);
 		try {
 			server.start();
-			//server.dumpStdErr();
+			server.dumpStdErr();
 			server.join();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package com.timeith.db.conn;
 
 import java.util.List;
 
+import com.timeith.db.utils.HibernateUtilsDB;
 import com.timeith.models.NewsHMDL;
 
 public class CRUDTest {
@@ -14,41 +15,41 @@ public class CRUDTest {
 
 		try {
 			System.out.println("Test news item create..");
-			newsItem = CRUDNews.create(count);
+			newsItem = CRUDNewsDB.create(count);
 			System.out.println("News item created: " + newsItem.toString());
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test read all news item..");
-			List<NewsHMDL> newsList = CRUDNews.readAll();
+			List<NewsHMDL> newsList = CRUDNewsDB.readAll();
 			for (NewsHMDL newsHMDL : newsList)
 				System.out.println(newsHMDL.toString());
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test update news item..");
-			newsItem = CRUDNews.update(newsId);
+			newsItem = CRUDNewsDB.update(newsId);
 			System.out.println("News item updated: " + newsItem.toString());
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test read single news item..");
-			newsItem = CRUDNews.readSingle(newsId);
+			newsItem = CRUDNewsDB.readSingle(newsId);
 			System.out.println("News item read: " + newsItem.toString());
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test delete news item..");
-			Boolean isDeleted = CRUDNews.delete(newsId);
+			Boolean isDeleted = CRUDNewsDB.delete(newsId);
 			if (isDeleted)
 				System.out.println("News item deleted: " + newsId + " deleted..");
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test read all news item..");
-			CRUDNews.readAll();
+			CRUDNewsDB.readAll();
 			for (NewsHMDL newsHMDL : newsList)
 				System.out.println(newsHMDL.toString());
-			HibernateUtils.closeSession();
+			HibernateUtilsDB.closeSession();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 
-		HibernateUtils.shutdown();
+		HibernateUtilsDB.shutdown();
 	}
 }

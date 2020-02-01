@@ -1,5 +1,7 @@
 package com.timeith.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +11,11 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "news")
+@Table(name = "rsslinks")
 @XmlRootElement
-public class RSSLinksHMDL {
+public class RSSLinksHMDL implements Serializable{
+
+	private static final long serialVersionUID = 2972792268609004108L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +29,9 @@ public class RSSLinksHMDL {
 	private String rsslinkurl;
 
 	public RSSLinksHMDL() {
-		super();
 	}
 
 	public RSSLinksHMDL(long rssLinkId, String rsslinkcategory, String rsslinkdescription, String rsslinkurl) {
-		super();
 		this.rssLinkId = rssLinkId;
 		this.rsslinkcategory = rsslinkcategory;
 		this.rsslinkdescription = rsslinkdescription;

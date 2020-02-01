@@ -92,4 +92,17 @@
 		<finalName>Timeith_Parent-${timeith.version}</finalName>
 	</build>
 
+	<modules>
+		<module>../exception</module>
+		<module>../models</module>
+		<module>../core</module>
+		<module>../db</module>
+		<module>../bcast</module>
+		<module>../rss</module>
+		<module>../twitter</module>
+		<module>../client</module>
+		<module>../webapi</module>
+		<module>../webserver</module>
+	</modules>
+
 </project>

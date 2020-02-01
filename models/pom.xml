@@ -30,5 +30,5 @@
 	<build>
 		<finalName>Timeith_Models-${timeith.version}</finalName>
 	</build>
-	
+
 </project>

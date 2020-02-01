@@ -1,5 +1,6 @@
 package com.timeith.models;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
@@ -13,7 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "news")
 @XmlRootElement
-public class NewsHMDL {
+public class NewsHMDL implements Serializable{
+
+	private static final long serialVersionUID = -9193154491975586526L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "newsId")

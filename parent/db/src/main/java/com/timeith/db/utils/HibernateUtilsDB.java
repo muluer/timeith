@@ -1,4 +1,4 @@
-package com.timeith.db.conn;
+package com.timeith.db.utils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,7 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
-public class HibernateUtils {
+public class HibernateUtilsDB {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 	private static Session session = null;

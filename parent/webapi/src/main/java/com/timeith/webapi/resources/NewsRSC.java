@@ -9,7 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.timeith.db.conn.CRUDNews;
+import com.timeith.db.conn.CRUDNewsDB;
 import com.timeith.models.NewsHMDL;
 
 @Path("/news")
@@ -22,7 +22,7 @@ public class NewsRSC {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(@QueryParam("count") int count) {
 		try {
-			newsItem = CRUDNews.create(count);
+			newsItem = CRUDNewsDB.create(count);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
@@ -35,7 +35,7 @@ public class NewsRSC {
 	public Response readAll() {
 		List<NewsHMDL> newsList = null;
 		try {
-			newsList = CRUDNews.readAll();
+			newsList = CRUDNewsDB.readAll();
 			return Response.status(Response.Status.OK).entity(newsList).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
@@ -47,7 +47,7 @@ public class NewsRSC {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(@QueryParam("newsid") long newsId) {
 		try {
-			newsItem = CRUDNews.update(newsId);
+			newsItem = CRUDNewsDB.update(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
@@ -60,7 +60,7 @@ public class NewsRSC {
 	public Response readSingle(@QueryParam("newsid") long newsId) {
 		System.out.println("Test read single news item..");
 		try {
-			newsItem = CRUDNews.readSingle(newsId);
+			newsItem = CRUDNewsDB.readSingle(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
@@ -74,7 +74,7 @@ public class NewsRSC {
 		System.out.println("Test delete news item..");
 		Boolean isDeleted = false;
 		try {
-			isDeleted = CRUDNews.delete(newsId);
+			isDeleted = CRUDNewsDB.delete(newsId);
 			return Response.status(Response.Status.OK).entity(isDeleted).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
@@ -87,7 +87,20 @@ public class NewsRSC {
 	public Response delete() {
 		System.out.println("Test delete all news item..");
 		try {
-			int itemCount = CRUDNews.deleteAll();
+			int itemCount = CRUDNewsDB.deleteAll();
+			return Response.status(Response.Status.OK).entity(itemCount).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+		}
+	}
+
+	@Path("/count")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response count() {
+		System.out.println("Test count all news items..");
+		try {
+			int itemCount = CRUDNewsDB.countAll();
 			return Response.status(Response.Status.OK).entity(itemCount).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();

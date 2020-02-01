@@ -7,17 +7,19 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import com.timeith.db.utils.HibernateUtilsDB;
 import com.timeith.models.NewsHMDL;
+import com.timeith.models.RSSLinksHMDL;
 
 @SuppressWarnings("unchecked")
-public class CRUDNews {
+public class CRUDNewsDB {
 
 	public static NewsHMDL create(int count) throws Exception {
 		NewsHMDL newsItem = new NewsHMDL();
 		newsItem.setTitle("test title" + count);
 		newsItem.setDescription("test description" + count);
 		newsItem.setPublishDate(ZonedDateTime.now());
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		long newsId = -1;
 		try {
@@ -39,7 +41,7 @@ public class CRUDNews {
 	}
 
 	public static List<NewsHMDL> readAll() throws Exception {
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		Query<NewsHMDL> query = null;
 		try {
@@ -63,7 +65,7 @@ public class CRUDNews {
 	}
 
 	public static NewsHMDL readSingle(long newsId) throws Exception {
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		try {
 			transaction = session.beginTransaction();
@@ -84,7 +86,7 @@ public class CRUDNews {
 	}
 
 	public static NewsHMDL update(long newsId) throws Exception {
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		NewsHMDL newsItem = null;
 		try {
@@ -108,7 +110,7 @@ public class CRUDNews {
 	}
 
 	public static Boolean delete(long newsId) throws Exception {
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		NewsHMDL newsItem = null;
 		try {
@@ -131,7 +133,7 @@ public class CRUDNews {
 	}
 
 	public static int deleteAll() throws Exception {
-		Session session = HibernateUtils.getSession();
+		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		Query<NewsHMDL> query = null;
 		try {
@@ -149,6 +151,30 @@ public class CRUDNews {
 			if (transaction != null)
 				transaction.rollback();
 			throw new Exception("Delete all news failed..", e.getCause());
+		} finally {
+			session.close();
+		}
+	}
+	
+	public static int countAll() throws Exception {
+		Session session = HibernateUtilsDB.getSession();
+		Transaction transaction = null;
+		Query<RSSLinksHMDL> query = null;
+		try {
+			transaction = session.beginTransaction();
+			String sql = "SELECT COUNT(*) FROM " + NewsHMDL.class.getName();
+			query = session.createQuery(sql);
+			int itemCount = query.list().size();
+			if (itemCount == 0)
+				throw new Exception("Table is empty..");
+			else {
+				transaction.commit();
+				return itemCount;
+			}
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			throw new Exception("Count News items failed..", e.getCause());
 		} finally {
 			session.close();
 		}

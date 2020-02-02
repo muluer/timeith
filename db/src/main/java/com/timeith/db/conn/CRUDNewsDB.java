@@ -9,7 +9,6 @@ import org.hibernate.query.Query;
 
 import com.timeith.db.utils.HibernateUtilsDB;
 import com.timeith.models.NewsHMDL;
-import com.timeith.models.RSSLinksHMDL;
 
 @SuppressWarnings("unchecked")
 public class CRUDNewsDB {
@@ -159,7 +158,7 @@ public class CRUDNewsDB {
 	public static int countAll() throws Exception {
 		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
-		Query<RSSLinksHMDL> query = null;
+		Query<NewsHMDL> query = null;
 		try {
 			transaction = session.beginTransaction();
 			String sql = "SELECT COUNT(*) FROM " + NewsHMDL.class.getName();

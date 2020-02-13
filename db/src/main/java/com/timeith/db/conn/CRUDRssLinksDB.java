@@ -151,15 +151,15 @@ public class CRUDRssLinksDB {
 		}
 	}
 
-	public static int countAll() throws Exception {
+	public static long countAll() throws Exception {
 		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
-		Query<RSSLinksHMDL> query = null;
+		Query<Long> query = null;
 		try {
 			transaction = session.beginTransaction();
 			String sql = "SELECT COUNT(*) FROM " + RSSLinksHMDL.class.getName();
 			query = session.createQuery(sql);
-			int itemCount = query.list().size();
+			long itemCount = query.getSingleResult();
 			if (itemCount == 0)
 				throw new Exception("Table is empty..");
 			else {

@@ -155,15 +155,15 @@ public class CRUDNewsDB {
 		}
 	}
 	
-	public static int countAll() throws Exception {
+	public static long countAll() throws Exception {
 		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
-		Query<NewsHMDL> query = null;
+		Query<Long> query = null;
 		try {
 			transaction = session.beginTransaction();
 			String sql = "SELECT COUNT(*) FROM " + NewsHMDL.class.getName();
 			query = session.createQuery(sql);
-			int itemCount = query.list().size();
+			long itemCount = query.getSingleResult();
 			if (itemCount == 0)
 				throw new Exception("Table is empty..");
 			else {

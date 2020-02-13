@@ -100,7 +100,7 @@ public class NewsRSC {
 	public Response count() {
 		System.out.println("Test count all news items..");
 		try {
-			int itemCount = CRUDNewsDB.countAll();
+			long itemCount = CRUDNewsDB.countAll();
 			return Response.status(Response.Status.OK).entity(itemCount).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.OK).entity(e.getMessage()).build();

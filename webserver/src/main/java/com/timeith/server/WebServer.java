@@ -17,7 +17,7 @@ import com.timeith.server.schedule.JobScheduler;
  *
  */
 public class WebServer {
-	private static final Logger LOGGER = LoggerFactory.getLogger(JobScheduler.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebServer.class);  
 
 	public static Server createServer(int port) {
 		LOGGER.debug("jetty starting..");

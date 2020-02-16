@@ -1,11 +1,11 @@
-package com.timeith.rss;
+package com.timeith.client;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class ContentFromAA {
+public class ContentFromAAExample {
 
 	private static final String CONTENT_URI = "https://www.aa.com.tr";
 
@@ -22,7 +22,7 @@ public class ContentFromAA {
 	}
 
 	public static void main(String[] args) {
-		ContentFromAA aa = new ContentFromAA();
+		ContentFromAAExample aa = new ContentFromAAExample();
 		String str = aa.getContentFromAA();
 		System.out.println(str);
 	}

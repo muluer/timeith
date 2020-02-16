@@ -13,19 +13,23 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import com.timeith.client.TimeithClient;
+import com.timeith.client.TimeithClientRSS;
+import com.timeith.models.NewsHMDL;
 
 public class RSSListenerAA{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RSSListenerAA.class);  
 	private static final String CONTENT_URI = "https://www.aa.com.tr/tr/rss/default?cat=guncel";
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 
 		LOGGER.debug("RSS Listener started..");
-		TimeithClient timeithClient = new TimeithClient();
-		InputStream contentBody = timeithClient.getRSS(CONTENT_URI);
+		
+		TimeithClientRSS timeithClientRSS = new TimeithClientRSS();
+		InputStream contentBody = timeithClientRSS.getRSS(CONTENT_URI);
+		timeithClientRSS.close();
 		
 		SyndFeedInput syndFeedInput = new SyndFeedInput();
 		SyndFeed syndFeed = null;
@@ -58,7 +62,20 @@ public class RSSListenerAA{
 			titleList.forEach(title -> System.out.println(title));
 		}
 		
+		//write RSS to DB
+		List<NewsHMDL> newsHMDList = syndFeed
+				.getEntries()
+				.stream()
+				.map(feed -> { 
+					NewsHMDL newsItem = new NewsHMDL();
+					newsItem.setNewsId(-1);
+					newsItem.setTitle(feed.getTitle());
+					newsItem.setDescription(feed.getDescription().getValue());	
+					newsItem.setPublishDate(feed.getPublishedDate());
+					return newsItem;
+				})
+				.collect(Collectors.toList());
+	return;
 	}
 	
-
 }

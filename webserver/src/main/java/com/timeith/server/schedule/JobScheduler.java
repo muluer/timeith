@@ -32,14 +32,13 @@ public class JobScheduler extends GenericServlet{
 		try {
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
-			
 			JobDetail jobDetail = JobBuilder
-					.newJob(JobSchedule.class)
-					.withIdentity("RSSJob")
+					.newJob(null)//TODO: ekle..
+					.withIdentity("RSSListenerJob")
 					.build();
 			ScheduleBuilder scheduleBuilder = SimpleScheduleBuilder
 					.simpleSchedule()
-					.withIntervalInSeconds(10)
+					.withIntervalInMinutes(5)
 					.repeatForever();
 			Trigger trigger = TriggerBuilder
 					.newTrigger()
@@ -47,9 +46,8 @@ public class JobScheduler extends GenericServlet{
 					.startNow()
 					.build();
 			scheduler.scheduleJob(jobDetail, trigger);
-			LOGGER.debug("RSSJob job scheduled..");
+			LOGGER.debug("RSS Listener Job job scheduled..");
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

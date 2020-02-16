@@ -1,16 +1,16 @@
 package com.timeith.models;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class NewsMDL {
 	private long newsId;
 	private String title;
 	private String description;
-	private ZonedDateTime publishDate;
+	private Date publishDate;
 	
 	public NewsMDL() {
 	}
-	public NewsMDL(long newsId, String title, String description, ZonedDateTime publishDate) {
+	public NewsMDL(long newsId, String title, String description, Date publishDate) {
 		this.newsId = newsId;
 		this.title = title;
 		this.description = description;
@@ -34,10 +34,10 @@ public class NewsMDL {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ZonedDateTime getPublishDate() {
+	public Date getPublishDate() {
 		return publishDate;
 	}
-	public void setPublishDate(ZonedDateTime publishDate) {
+	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}
 

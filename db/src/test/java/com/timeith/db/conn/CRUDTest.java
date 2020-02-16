@@ -1,5 +1,7 @@
 package com.timeith.db.conn;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import com.timeith.db.utils.HibernateUtilsDB;
@@ -11,11 +13,11 @@ public class CRUDTest {
 		
 		NewsHMDL newsItem = null;
 		long newsId = 46;
-		int count = 45;
 
 		try {
 			System.out.println("Test news item create..");
-			newsItem = CRUDNewsDB.create(count);
+			newsItem = new NewsHMDL(-1, "title001", "description001", Date.from(Instant.now()));
+			newsItem = CRUDNewsDB.create(newsItem);
 			System.out.println("News item created: " + newsItem.toString());
 			HibernateUtilsDB.closeSession();
 

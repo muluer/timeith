@@ -1,6 +1,7 @@
 package com.timeith.db.conn;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,11 +14,7 @@ import com.timeith.models.NewsHMDL;
 @SuppressWarnings("unchecked")
 public class CRUDNewsDB {
 
-	public static NewsHMDL create(int count) throws Exception {
-		NewsHMDL newsItem = new NewsHMDL();
-		newsItem.setTitle("test title" + count);
-		newsItem.setDescription("test description" + count);
-		newsItem.setPublishDate(ZonedDateTime.now());
+	public static NewsHMDL create(NewsHMDL newsItem) throws Exception {
 		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		long newsId = -1;
@@ -94,7 +91,7 @@ public class CRUDNewsDB {
 			if (newsItem == null)
 				throw new Exception("News Id not found for Update..");
 			else {
-				newsItem.setPublishDate(ZonedDateTime.now().minusDays(1));
+				newsItem.setPublishDate(Date.from(Instant.now()));
 				session.update(newsItem);
 				transaction.commit();
 				return newsItem;

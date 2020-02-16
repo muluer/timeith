@@ -1,7 +1,7 @@
 package com.timeith.models;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,12 +27,12 @@ public class NewsHMDL implements Serializable{
 	@Column(name = "description")
 	private String description;
 	@Column(name = "publishDate")
-	private ZonedDateTime publishDate;
+	private Date publishDate;
 
 	public NewsHMDL() {
 	}
 
-	public NewsHMDL(long newsId, String title, String description, ZonedDateTime publishDate) {
+	public NewsHMDL(long newsId, String title, String description, Date publishDate) {
 		this.newsId = newsId;
 		this.title = title;
 		this.description = description;
@@ -63,11 +63,11 @@ public class NewsHMDL implements Serializable{
 		this.description = description;
 	}
 
-	public ZonedDateTime getPublishDate() {
+	public Date getPublishDate() {
 		return publishDate;
 	}
 
-	public void setPublishDate(ZonedDateTime publishDate) {
+	public void setPublishDate(Date publishDate) {
 		this.publishDate = publishDate;
 	}
 

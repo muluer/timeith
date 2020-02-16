@@ -10,8 +10,7 @@ import javax.ws.rs.core.Response;
  * Timeith Client
  *
  */
-public class TimeithClient 
-{
+public class TimeithClientRSS {
 	private Client client = ClientBuilder.newClient();
 
 	public InputStream getRSS(String content_uri) {
@@ -22,6 +21,10 @@ public class TimeithClient
 				.get();
 		InputStream contentBody = response.readEntity(InputStream.class);
 		return contentBody;
+	}
+	
+	public void close() {
+		client.close();
 	}
 	
 }

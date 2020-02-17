@@ -28,7 +28,7 @@ public class NewsRSC {
 			newsItem = CRUDNewsDB.create(newsHMDL);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 
@@ -41,7 +41,7 @@ public class NewsRSC {
 			newsList = CRUDNewsDB.readAll();
 			return Response.status(Response.Status.OK).entity(newsList).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		}
 	}
 
@@ -53,7 +53,7 @@ public class NewsRSC {
 			newsItem = CRUDNewsDB.update(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 
@@ -66,7 +66,7 @@ public class NewsRSC {
 			newsItem = CRUDNewsDB.readSingle(newsId);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 		}
 	}
 
@@ -80,7 +80,7 @@ public class NewsRSC {
 			isDeleted = CRUDNewsDB.delete(newsId);
 			return Response.status(Response.Status.OK).entity(isDeleted).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 
@@ -93,7 +93,7 @@ public class NewsRSC {
 			int itemCount = CRUDNewsDB.deleteAll();
 			return Response.status(Response.Status.OK).entity(itemCount).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 
@@ -106,7 +106,7 @@ public class NewsRSC {
 			long itemCount = CRUDNewsDB.countAll();
 			return Response.status(Response.Status.OK).entity(itemCount).build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.OK).entity(e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 

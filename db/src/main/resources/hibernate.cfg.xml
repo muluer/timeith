@@ -8,9 +8,9 @@
 	<session-factory>
 
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/newsdb</property>
-		<property name="hibernate.connection.username">nsr</property>
-		<property name="hibernate.connection.password">1</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://127.0.0.1:5432/db_name</property>
+		<property name="hibernate.connection.username">user_name</property>
+		<property name="hibernate.connection.password">user_password</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="show_sql">true</property>
 		<property name="hibernate.hbm2ddl.auto">none</property>

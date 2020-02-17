@@ -2,7 +2,9 @@ package com.timeith.rss;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,24 +15,21 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import com.timeith.client.TimeithClientRSS;
+import com.timeith.client.TimeithClient;
 import com.timeith.models.NewsHMDL;
 
 public class RSSListenerAA{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RSSListenerAA.class);  
-	private static final String CONTENT_URI = "https://www.aa.com.tr/tr/rss/default?cat=guncel";
+	private static final String AARSS_URI 		= "https://www.aa.com.tr/tr/rss/default?cat=guncel";
+	private static final String NEWSDB_URI 		= "http://127.0.0.1:9090/webapi/v1/";
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused"})
 	public static void main(String[] args) {
 		
-
 		LOGGER.debug("RSS Listener started..");
 		
-		TimeithClientRSS timeithClientRSS = new TimeithClientRSS();
-		InputStream contentBody = timeithClientRSS.getRSS(CONTENT_URI);
-		timeithClientRSS.close();
-		
+		InputStream contentBody = TimeithClient.getRSS(AARSS_URI);
 		SyndFeedInput syndFeedInput = new SyndFeedInput();
 		SyndFeed syndFeed = null;
 		List<String> titleList = new ArrayList<String>();
@@ -47,6 +46,7 @@ public class RSSListenerAA{
 			e.printStackTrace();
 		}
 		
+		//extract titles
 		if (syndFeed == null)
 			LOGGER.debug("no content");
 		else {
@@ -62,7 +62,7 @@ public class RSSListenerAA{
 			titleList.forEach(title -> System.out.println(title));
 		}
 		
-		//write RSS to DB
+		//transform RSS feeds
 		List<NewsHMDL> newsHMDList = syndFeed
 				.getEntries()
 				.stream()
@@ -75,7 +75,22 @@ public class RSSListenerAA{
 					return newsItem;
 				})
 				.collect(Collectors.toList());
-	return;
+		
+		//write to db
+		List<NewsHMDL> CreatedNewsItems = newsHMDList
+				.stream()
+				.map(item -> {
+					NewsHMDL newsItem = new NewsHMDL(-1, "", "", Date.from(Instant.now()));
+					try {
+						newsItem = TimeithClient.createRssItem(NEWSDB_URI, item);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return newsItem;
+				})
+				.collect(Collectors.toList());
+		return;
 	}
 	
 }

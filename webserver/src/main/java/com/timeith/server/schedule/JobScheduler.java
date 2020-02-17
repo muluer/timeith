@@ -33,7 +33,7 @@ public class JobScheduler extends GenericServlet{
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
 			JobDetail jobDetail = JobBuilder
-					.newJob(null)//TODO: ekle..
+					.newJob(JobScheduleExample.class)//TODO: ekle..
 					.withIdentity("RSSListenerJob")
 					.build();
 			ScheduleBuilder scheduleBuilder = SimpleScheduleBuilder

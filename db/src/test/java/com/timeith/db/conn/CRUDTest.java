@@ -28,7 +28,8 @@ public class CRUDTest {
 			HibernateUtilsDB.closeSession();
 
 			System.out.println("Test update news item..");
-			newsItem = CRUDNewsDB.update(newsId);
+			NewsHMDL tmpNewsItem = new NewsHMDL(1, "title1001", "description1001", Date.from(Instant.now()));
+			newsItem = CRUDNewsDB.update(tmpNewsItem);
 			System.out.println("News item updated: " + newsItem.toString());
 			HibernateUtilsDB.closeSession();
 

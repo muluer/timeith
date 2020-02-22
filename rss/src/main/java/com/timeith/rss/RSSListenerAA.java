@@ -32,7 +32,6 @@ public class RSSListenerAA{
 		InputStream contentBody = TimeithClient.getRSS(AARSS_URI);
 		SyndFeedInput syndFeedInput = new SyndFeedInput();
 		SyndFeed syndFeed = null;
-		List<String> titleList = new ArrayList<String>();
 		try {
 			syndFeed = syndFeedInput.build(new XmlReader(contentBody));
 		} catch (IllegalArgumentException e) {
@@ -46,7 +45,46 @@ public class RSSListenerAA{
 			e.printStackTrace();
 		}
 		
+		// debug
+		printTitles(syndFeed);
+		
+		//transform RSS feeds
+		List<NewsHMDL> newsHMDList = syndFeed
+				.getEntries()
+				.stream()
+				.map(feed -> { 
+					NewsHMDL newsItem = new NewsHMDL();
+					newsItem.setNewsId(-1);
+					newsItem.setTitle(feed.getTitle());
+					newsItem.setDescription(feed.getDescription().getValue());	
+					newsItem.setPublishDate(feed.getPublishedDate());
+					newsItem.setGuId(feed.getUri());
+					newsItem.setLink(feed.getLink());
+					newsItem.setImage(feed.getLink());;
+					return newsItem;
+				})
+				.collect(Collectors.toList());
+		
+		//write to db
+		List<NewsHMDL> NewsItemsWritten = newsHMDList
+				.stream()
+				.map(item -> {
+					NewsHMDL newsItem = new NewsHMDL(-1, "no title", "no description", Date.from(Instant.now()), "-1", "http://no.link", "http://no.link");
+					try {
+						newsItem = TimeithClient.writeRssItem(NEWSDB_URI, item);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return newsItem;
+				})
+				.collect(Collectors.toList());
+		return;
+	}
+	
+	private static void printTitles(SyndFeed syndFeed) {
 		//extract titles
+		List<String> titleList = new ArrayList<String>();
 		if (syndFeed == null)
 			LOGGER.debug("no content");
 		else {
@@ -61,36 +99,6 @@ public class RSSListenerAA{
 		else {
 			titleList.forEach(title -> System.out.println(title));
 		}
-		
-		//transform RSS feeds
-		List<NewsHMDL> newsHMDList = syndFeed
-				.getEntries()
-				.stream()
-				.map(feed -> { 
-					NewsHMDL newsItem = new NewsHMDL();
-					newsItem.setNewsId(-1);
-					newsItem.setTitle(feed.getTitle());
-					newsItem.setDescription(feed.getDescription().getValue());	
-					newsItem.setPublishDate(feed.getPublishedDate());
-					return newsItem;
-				})
-				.collect(Collectors.toList());
-		
-		//write to db
-		List<NewsHMDL> CreatedNewsItems = newsHMDList
-				.stream()
-				.map(item -> {
-					NewsHMDL newsItem = new NewsHMDL(-1, "", "", Date.from(Instant.now()));
-					try {
-						newsItem = TimeithClient.createRssItem(NEWSDB_URI, item);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return newsItem;
-				})
-				.collect(Collectors.toList());
-		return;
 	}
 	
 }

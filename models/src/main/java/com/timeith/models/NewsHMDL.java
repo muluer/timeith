@@ -28,6 +28,12 @@ public class NewsHMDL implements Serializable{
 	private String description;
 	@Column(name = "publishDate")
 	private Date publishDate;
+	@Column(name = "guId")
+	private String guId;	
+	@Column(name = "link")
+	private String link;
+	@Column(name = "image")
+	private String image;
 
 	public NewsHMDL() {
 	}
@@ -37,6 +43,17 @@ public class NewsHMDL implements Serializable{
 		this.title = title;
 		this.description = description;
 		this.publishDate = publishDate;
+	}
+
+	public NewsHMDL(long newsId, String title, String description, Date publishDate, String guId, String link,
+			String image) {
+		this.newsId = newsId;
+		this.title = title;
+		this.description = description;
+		this.publishDate = publishDate;
+		this.guId = guId;
+		this.link = link;
+		this.image = image;
 	}
 
 	public long getNewsId() {
@@ -71,10 +88,34 @@ public class NewsHMDL implements Serializable{
 		this.publishDate = publishDate;
 	}
 
+	public String getGuId() {
+		return guId;
+	}
+
+	public void setGuId(String guId) {
+		this.guId = guId;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
-		return "NewsHMDL [newsId=" + newsId + ", title=" + title + ", description=" + description + ", publishDate="
-				+ publishDate + "]";
+		return "NewsHMDL [newsId=" + newsId + ", guId=" + guId + ", title=" + title + ", link=" + link + ", image="
+				+ image + ", description=" + description + ", publishDate=" + publishDate + "]";
 	}
 
 }

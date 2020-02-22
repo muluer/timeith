@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -46,11 +47,11 @@ public class NewsRSC {
 	}
 
 	@Path("/update")
-	@GET
+	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@QueryParam("newsid") long newsId) {
+	public Response update(NewsHMDL newsHMDL) {
 		try {
-			newsItem = CRUDNewsDB.update(newsId);
+			newsItem = CRUDNewsDB.update(newsHMDL);
 			return Response.status(Response.Status.OK).entity(newsItem).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();

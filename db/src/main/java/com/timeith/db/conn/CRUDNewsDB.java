@@ -1,7 +1,5 @@
 package com.timeith.db.conn;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -81,17 +79,19 @@ public class CRUDNewsDB {
 		}
 	}
 
-	public static NewsHMDL update(long newsId) throws Exception {
+	public static NewsHMDL update(NewsHMDL newsHMDL) throws Exception {
 		Session session = HibernateUtilsDB.getSession();
 		Transaction transaction = null;
 		NewsHMDL newsItem = null;
 		try {
 			transaction = session.beginTransaction();
-			newsItem = session.get(NewsHMDL.class, newsId);
+			newsItem = session.get(NewsHMDL.class, newsHMDL.getNewsId());
 			if (newsItem == null)
 				throw new Exception("News Id not found for Update..");
 			else {
-				newsItem.setPublishDate(Date.from(Instant.now()));
+				newsItem.setTitle(newsHMDL.getTitle());
+				newsItem.setDescription(newsHMDL.getDescription());
+				newsItem.setPublishDate(newsHMDL.getPublishDate());
 				session.update(newsItem);
 				transaction.commit();
 				return newsItem;

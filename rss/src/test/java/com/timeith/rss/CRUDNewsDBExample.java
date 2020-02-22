@@ -26,7 +26,7 @@ public class CRUDNewsDBExample {
 		NewsHMDL tmpNewsItem = new NewsHMDL(-1, "test003", "testdesc003", Date.from(Instant.now()));
 		newsItem = new NewsHMDL(-1, "", "", Date.from(Instant.now()));
 		try {
-			newsItem = TimeithClient.createRssItem(NEWSDB_URI, tmpNewsItem);
+			newsItem = TimeithClient.writeRssItem(NEWSDB_URI, tmpNewsItem);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

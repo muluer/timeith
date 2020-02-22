@@ -1,14 +1,13 @@
 package com.timeith.client;
 
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.json.JacksonJsonProvider;
 
 import com.timeith.models.NewsHMDL;
 
@@ -17,6 +16,7 @@ import com.timeith.models.NewsHMDL;
  *
  */
 public class TimeithClient {
+	private static ClientBuilder clientBuilder;
 	private static Client client;
 	
 	public TimeithClient() {
@@ -34,7 +34,7 @@ public class TimeithClient {
 		return contentBody;
 	}
 	
-	public static NewsHMDL createRssItem(String content_uri, NewsHMDL newsHMDL) throws Exception {
+	public static NewsHMDL writeRssItem(String content_uri, NewsHMDL newsHMDL) throws Exception {
 		init();
 		NewsHMDL contentBody = null;
 		Response response = client
@@ -78,7 +78,10 @@ public class TimeithClient {
 	}
 	
 	public static void init() {
-		client = ClientBuilder.newClient();
+		clientBuilder = ClientBuilder.newBuilder();
+		clientBuilder.connectTimeout(10,TimeUnit.SECONDS);
+		clientBuilder.readTimeout(20, TimeUnit.SECONDS);
+		client = clientBuilder.build();
 	}
 	
 	public static void close() {

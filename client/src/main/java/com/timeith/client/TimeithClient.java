@@ -1,11 +1,13 @@
 package com.timeith.client;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -50,6 +52,27 @@ public class TimeithClient {
 			throw new Exception(response.readEntity(String.class));
 		} else {
 			contentBody = response.readEntity(NewsHMDL.class);	
+		}
+		close();
+		return contentBody;
+	}
+
+	public static List<Long> writeAllRssItem(String content_uri, List<NewsHMDL> newsHMDLList) throws Exception {
+		init();
+		List<Long> contentBody = null;
+		Response response = client
+				.target(content_uri)
+				.path("/news/createall")
+				.request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.header("Content-Type", "application/json")
+				.header("Accept", "application/json")
+				.header("Charset", "UTF-8")
+				.post(Entity.json(newsHMDLList));
+		if (response.getStatus() != 200) {
+			throw new Exception(response.readEntity(String.class));
+		} else {
+			contentBody = response.readEntity(new GenericType<List<Long>>() {});	
 		}
 		close();
 		return contentBody;

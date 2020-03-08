@@ -16,13 +16,17 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import com.timeith.client.TimeithClient;
+import com.timeith.commons.util.MapperWrapper;
 import com.timeith.models.NewsHMDL;
 
 public class RSSListenerAA{
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RSSListenerAA.class);  
-	private static final String AARSS_URI 		= "https://www.aa.com.tr/tr/rss/default?cat=guncel";
-	private static final String NEWSDB_URI 		= "http://127.0.0.1:9090/webapi/v1/";
+	private static final Logger LOGGER = LoggerFactory.getLogger(RSSListenerAA.class);
+	private static final String CACHE_DIR = "src/main/resources/cacheDate";
+	private static final String AARSS_URI = "https://www.aa.com.tr/tr/rss/default?cat=guncel";
+	private static final String NEWSDB_URI = "http://127.0.0.1:9090/webapi/v1/";
+	private static final Date cachedDate = getCachedDate(CACHE_DIR);
+ 
 
 	@SuppressWarnings({ "unused"})
 	public static void main(String[] args) {
@@ -35,18 +39,16 @@ public class RSSListenerAA{
 		try {
 			syndFeed = syndFeedInput.build(new XmlReader(contentBody));
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FeedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		// debug
 		printTitles(syndFeed);
+		printGuids(syndFeed);
 		
 		//transform RSS feeds
 		List<NewsHMDL> newsHMDList = syndFeed
@@ -65,23 +67,85 @@ public class RSSListenerAA{
 				})
 				.collect(Collectors.toList());
 		
-		//write to db
-		List<NewsHMDL> NewsItemsWritten = newsHMDList
-				.stream()
-				.map(item -> {
-					NewsHMDL newsItem = new NewsHMDL(-1, "no title", "no description", Date.from(Instant.now()), "-1", "http://no.link", "http://no.link");
-					try {
-						newsItem = TimeithClient.writeRssItem(NEWSDB_URI, item);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return newsItem;
-				})
-				.collect(Collectors.toList());
-		return;
+		if (newsHMDList.isEmpty()) {
+			LOGGER.debug("empty feed..");
+			return;
+		} else {
+			// cache latest date
+				List<NewsHMDL> writeToDB = null;
+				try {
+					writeToDB = itemCache(CACHE_DIR, newsHMDList);
+					if (writeToDB.isEmpty())
+						return;
+					else {
+						// write all new items to db
+							List<Long> NewsAllItemsWritten = TimeithClient.writeAllRssItem(NEWSDB_URI, writeToDB);
+						}	
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return;
+		}
 	}
+
+	private static List<NewsHMDL> itemCache(String cacheDir, List<NewsHMDL> newsItemList) throws IOException {
+		
+		List<NewsHMDL> writeToDB = new ArrayList<NewsHMDL>();
+
+		Date latestDate = null;
+
+		writeToDB = newsItemList
+				.stream()
+				.filter(item -> {
+					if (item.getPublishDate().compareTo(cachedDate) > 0)
+						return true;
+					else
+						return false;
+					})
+				.collect(Collectors.toList());
+		
+		if (!writeToDB.isEmpty()) {
+			latestDate = writeToDB
+					.stream()
+					.map(item -> item.getPublishDate())
+					.reduce(cachedDate, (d1, d2) -> {
+						if (d1.after(d2))
+							return d1;
+						else
+							return d2;
+					});
+		}
+		
+		if (latestDate != null) {
+			try {
+				MapperWrapper.writeWithClassRefence(cacheDir, latestDate);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+		
+		return writeToDB;
+	}		
 	
+	private static Date getCachedDate(String cacheDir) {
+		boolean cacheFileOK = false;
+		Date latestDate = null;
+		Date cachedDate = null;
+		
+		try {
+			latestDate = MapperWrapper.readWithClassRefence(cacheDir, Date.class);
+			cacheFileOK = true;
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		
+		cachedDate = cacheFileOK ? latestDate : Date.from(Instant.EPOCH);
+		return cachedDate;
+	}
+
 	private static void printTitles(SyndFeed syndFeed) {
 		//extract titles
 		List<String> titleList = new ArrayList<String>();
@@ -101,4 +165,7 @@ public class RSSListenerAA{
 		}
 	}
 	
+	private static void printGuids(SyndFeed syndFeed) {
+		syndFeed.getEntries().stream().map(item -> item.getUri()).forEach(item -> System.out.println(item));
+	}
 }

@@ -1,5 +1,6 @@
 package com.timeith.db.conn;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -33,6 +34,34 @@ public class CRUDNewsDB {
 			session.close();
 		}
 	}
+	
+	public static List<Long> createAll(List<NewsHMDL> newsHMDLList) throws Exception {
+		Session session = HibernateUtilsDB.getSession();
+		Transaction transaction = null;
+		List<Long> newsIdList = new ArrayList<Long>();
+		try {
+			transaction = session.beginTransaction();
+			int i = 0;
+			for (NewsHMDL newsHMDL : newsHMDLList) {
+				newsIdList.add((long) session.save(newsHMDL));
+				i++;
+				// <property name="hibernate.jdbc.batch_size">10</property>
+				if (i % 10 == 0) {
+					session.flush();
+					session.clear();
+				}
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			if (transaction != null)
+				transaction.rollback();
+			throw new Exception("Create news item failed..", e.getCause());
+		} finally {
+			session.close();
+		}
+		return newsIdList;
+	}
+
 
 	public static List<NewsHMDL> readAll() throws Exception {
 		Session session = HibernateUtilsDB.getSession();

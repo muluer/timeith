@@ -33,6 +33,19 @@ public class NewsRSC {
 		}
 	}
 
+	@Path("/createall")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createall(List<NewsHMDL> newsHMDLList) {
+		try {
+			List<Long> newsIdList = CRUDNewsDB.createAll(newsHMDLList);
+			return Response.status(Response.Status.OK).entity(newsIdList).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+	}
+
 	@Path("/readall")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

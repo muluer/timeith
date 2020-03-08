@@ -11,8 +11,8 @@
 		<version>0.0.17</version>
 	</parent>
 
-	<artifactId>rss</artifactId>
-	<name>Timeith RSS</name>
+	<artifactId>examples</artifactId>
+	<name>Timeith Examples</name>
 	<url>http://www.timeith.com</url>
 
 	<dependencies>
@@ -21,31 +21,19 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.rometools</groupId>
-			<artifactId>rome</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.timeith</groupId>
-			<artifactId>client</artifactId>
+			<artifactId>commons</artifactId>
 			<version>0.0.17</version>
 		</dependency>
 		<dependency>
 			<groupId>com.timeith</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>models</artifactId>
 			<version>0.0.17</version>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>Timeith_RSS-${timeith.version}</finalName>
+		<finalName>Timeith_Examples-${timeith.version}</finalName>
 	</build>
 
 </project>

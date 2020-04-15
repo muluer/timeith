@@ -9,6 +9,7 @@
 		<groupId>com.timeith</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.17</version>
+		<relativePath>../parent</relativePath>
 	</parent>
 
 	<artifactId>examples</artifactId>

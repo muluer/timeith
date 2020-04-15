@@ -10,6 +10,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<jersey.version>2.29.1</jersey.version>
+		<jackson.version>2.6.7.1</jackson.version>
 		<jetty.version>9.4.25.v20191220</jetty.version>
 		<hibernate.version>5.4.10.Final</hibernate.version>
 		<slf4j.version>1.7.30</slf4j.version>
@@ -78,7 +79,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.10.1</version>
+				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.postgresql</groupId>
@@ -144,6 +145,9 @@
 		<module>../client</module>
 		<module>../webapi</module>
 		<module>../webserver</module>
+		<module>../commons</module>
+		<module>../driver</module>
+		<module>../examples</module>
 	</modules>
 
 </project>

@@ -11,13 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.timeith.server.schedule.JobScheduler;
+import com.timeith.webapi.HelloServlet;
 
 /**
+ * 
  * Web Server
  *
  */
 public class WebServer {
-	private static final Logger LOGGER = LoggerFactory.getLogger(WebServer.class);  
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebServer.class);
 
 	public static Server createServer(int port) {
 		LOGGER.debug("jetty starting..");
@@ -35,19 +37,22 @@ public class WebServer {
 		ServletContextHandler jettyServletContextHandler1 = new ServletContextHandler();
 		jettyServletContextHandler1.setContextPath("/webapi/v1");
 		jettyServletContextHandler1.addServlet(webapiServletHolder, "/*");
-		
-        ServletContextHandler jettyServletContextHandler2 = new ServletContextHandler();
-        jettyServletContextHandler2.setContextPath("/scheduler/");
-        /*
-        HelloServlet helloServlet = new HelloServlet();
-        ServletHolder helloHolder = new ServletHolder(helloServlet);
-        jettyServletContextHandler2.addServlet(helloHolder, "/*");
-        */
-        JobScheduler jobScheduler = new JobScheduler();
-        ServletHolder jServletHolder = new ServletHolder(jobScheduler);
-        jettyServletContextHandler2.addServlet(jServletHolder, "/*");
 
-		ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection(jettyServletContextHandler1, jettyServletContextHandler2);
+		ServletContextHandler jettyServletContextHandler2 = new ServletContextHandler();
+		jettyServletContextHandler2.setContextPath("/scheduler/");
+
+		JobScheduler jobScheduler = new JobScheduler();
+		ServletHolder jServletHolder = new ServletHolder(jobScheduler);
+		jettyServletContextHandler2.addServlet(jServletHolder, "/*");
+
+		ServletContextHandler jettyServletContextHandler3 = new ServletContextHandler();
+		jettyServletContextHandler3.setContextPath("/health/");
+		HelloServlet helloServlet = new HelloServlet();
+		ServletHolder helloHolder = new ServletHolder(helloServlet);
+		jettyServletContextHandler3.addServlet(helloHolder, "/*");
+
+		ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection(jettyServletContextHandler1,
+				jettyServletContextHandler2, jettyServletContextHandler3);
 		jettyServer.setHandler(contextHandlerCollection);
 
 		return jettyServer;

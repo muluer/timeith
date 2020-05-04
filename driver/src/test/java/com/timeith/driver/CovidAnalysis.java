@@ -4,11 +4,10 @@ package com.timeith.driver;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.desc;
 import static org.apache.spark.sql.functions.explode;
+import static org.apache.spark.sql.functions.round;
 import static org.apache.spark.sql.functions.row_number;
 import static org.apache.spark.sql.functions.sum;
-import static org.apache.spark.sql.functions.round;
 
-import org.apache.spark.SparkConf;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
@@ -33,7 +32,7 @@ public class CovidAnalysis {
 		SparkSession spark= SparkDriver.getOrCreate();
 		
 		String path = "src/main/resources/";
-		String datasetFile = path + "COVID19_20200418.json";
+		String datasetFile = path + "COVID19_20200504.json";
         
         Dataset<Row> covidDataset = spark
         		.read()
@@ -84,8 +83,8 @@ public class CovidAnalysis {
         sortedCasesRecords.show(count, false);
         sortedPecentageRecords.show(count, false);
         sortedPecentageRecords
-        		.filter(sortedPecentageRecords.col("country total cases").gt(250))
-        		.filter(sortedPecentageRecords.col("country total deaths").gt(10))
+        		.filter(sortedPecentageRecords.col("country total cases").gt(1000))
+        		.filter(sortedPecentageRecords.col("country total deaths").gt(100))
 				.select(row_number().over(Window.orderBy(desc("percent"))).alias("idx (filtered)"), 
 						col("country"),
 						col("country total cases"), 
